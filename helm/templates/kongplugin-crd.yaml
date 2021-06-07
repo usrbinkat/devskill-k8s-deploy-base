@@ -1,0 +1,93 @@
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: test-oidc-plugin
+  namespace: default
+config:
+  upstream_headers_claims:
+  - adams_useraccount_id
+  - preferred_username
+  - given_name
+  - family_name
+  - email
+  upstream_headers_names:
+  - X-SSO-AdamsUserId
+  - X-SSO-Username
+  - X-SSO-Firstname
+  - X-SSO-Lastname
+  - X-SSO-Email
+  session_secret: {{ .Values.pluginConfig.kongOidc.session_secret }}
+  login_methods:
+  - authorization_code
+  auth_methods:
+  - session
+  password_param_type:
+  - header
+  - query
+  - body
+  session_storage: redis
+  refresh_tokens: true
+  upstream_access_token_header: authorization:bearer
+  verify_claims: true
+  id_token_param_type:
+  - header
+  - query
+  - body
+  session_redis_port: 6379
+  session_strategy: default
+  session_cookie_samesite: Lax
+  session_cookie_httponly: true
+  issuer: https://sso.abcd.net/auth/realms/test/.well-known/openid-configuration
+  cache_tokens: true
+  run_on_preflight: true
+  client_auth:
+  - client_secret_basic
+  authorization_cookie_path: "/"
+  response_type:
+  - code
+  session_redis_host: kong-redis-master
+  session_redis_auth: {{ .Values.pluginConfig.kongOidc.session_redis_auth }}
+  login_action: redirect
+  refresh_token_param_type:
+  - header
+  - query
+  - body
+  authorization_cookie_samesite: 'off'
+  session_redis_ssl_verify: false
+  client_secret:
+  - {{ .Values.pluginConfig.kongOidc.secure_pass_phrase }}
+  login_tokens:
+  - id_token
+  ssl_verify: false
+  authorization_cookie_name: authorization
+  session_cookie_lifetime: 3600
+  verify_nonce: true
+  response_mode: query
+  reverify: false
+  session_cookie_path: "/"
+  bearer_token_param_type:
+  - header
+  - query
+  - body
+  cache_user_info: true
+  rediscovery_lifetime: 30
+  verify_signature: true
+  forbidden_destroy_session: true
+  client_id:
+  - {{ .Values.pluginConfig.kongOidc.client_id }}
+  client_credentials_param_type:
+  - header
+  - query
+  - body
+  session_cookie_renew: 600
+  session_cookie_name: session
+  session_redis_prefix: sessions
+  client_arg: client_id
+  scopes:
+  - openid
+  authorization_cookie_httponly: true
+  logout_methods:
+  - POST
+  - DELETE
+plugin: openid-connect

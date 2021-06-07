@@ -1,0 +1,18 @@
+# Render with helm:
+#   helm template test-api ./ | tee rendered.yaml
+
+nameOverride: "test-api"
+labels:
+  app: test-api-label
+selectorLabels:
+  app: test-api
+service:
+  type: NodePort
+  port: 443
+pluginConfig:
+  kongOidc:
+    client_id: "secretSupermanClientId"
+    client_secret: "secretSupermanClientSecret"
+    session_secret: "secretSupermanSessionSecret"
+    session_redis_auth: "secretSupermanRedisAuth"
+    secure_pass_phrase: "secretSupermanPassPhrase"

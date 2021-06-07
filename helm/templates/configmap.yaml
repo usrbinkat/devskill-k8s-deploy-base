@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "myapp.fullname" . }}-cfgmap
+  labels:
+    {{- include "myapp.labels" . | nindent 4 }}
+data:
+  # file-like keys
+  test-api.config: |
+    NODE_ENV=dev
+    APP_LOG=./logs/capi.log
+    LOG_LEVEL=debug
+    LOG_REQUEST=true
+    HTTPS_PORT=9000
+    BAPI_HOST=test.abcd.net
+    BAPI_BASE_URL=/api-rest/v1
+    ENDPOINT_LOGON_INFO=/enterprise/userPreference
+    ENDPOINT_TDSSA=/tdp/tdssa
+    ENDPOINT_TDP=/tdp
+    ENDPOINT_DCF=/dcf
+    ENDPOINT_COUNTRIES=/country
+    ENDPOINT_ORGANIZATION=/organization
+    ENDPOINT_DASHBOARD=/dashboard
+    ENDPOINT_USER=/user
+    ENDPOINT_MODULEACCESS=/moduleAccess
+    ENDPOINT_WHEREABOUTS=/whereaboutsNG
+    ENDPOINT_ATHLETE=/customer
+    SECURE_PASS_PHRASE={{ .Values.pluginConfig.kongOidc.secure_pass_phrase }}
+    ENDPOINT_TEST=/testing
+    ENDPOINT_TESTING_ORDER=/testingOrder
+    DEFAULT_USER_LOCALE=en
+    TDP_USER_ACTIVE_SINCE_MILLISECONDS=300000
